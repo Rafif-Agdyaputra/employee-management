@@ -1,0 +1,19 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+    <h2 class="text-2xl font-bold mb-6">Employee Details</h2>
+
+    <div *ngIf="employee">
+      <p class="mb-2"><strong>Username:</strong> {{ employee.username }}</p>
+      <p class="mb-2"><strong>First Name:</strong> {{ employee.firstName }}</p>
+      <p class="mb-2"><strong>Last Name:</strong> {{ employee.lastName }}</p>
+      <p class="mb-2"><strong>Email:</strong> {{ employee.email }}</p>
+      <p class="mb-2"><strong>Birth Date:</strong> {{ employee.birthDate | date:'dd/MM/yyyy' }}</p>
+      <p class="mb-2"><strong>Basic Salary:</strong> {{ formatSalary(employee.basicSalary) }}</p>
+      <p class="mb-2"><strong>Status:</strong> {{ employee.status }}</p>
+      <p class="mb-2"><strong>Group:</strong> {{ employee.group }}</p>
+      <p class="mb-2"><strong>Description:</strong> {{ employee.description }}</p>
+    </div>
+
+    <button (click)="goBack()" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">OK</button>
+  </div>
+</div>

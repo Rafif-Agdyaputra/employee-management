@@ -1,0 +1,70 @@
+<div class="container mx-auto p-6 bg-gray-50">
+  <h2 class="text-3xl font-bold text-gray-800 mb-6">Daftar Karyawan</h2>
+  <div class="mb-6 flex justify-between items-center">
+    <input
+      type="text"
+      placeholder="Search by first or last name"
+      [(ngModel)]="searchText"
+      (ngModelChange)="search()"
+      class="border border-gray-300 p-2 rounded-lg w-1/2 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    />
+    <button (click)="addEmployee()" class="bg-indigo-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700">
+      Add Employee
+    </button>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white shadow-md rounded-lg border border-gray-200">
+      <thead class="bg-indigo-600 text-white">
+      <tr>
+        <th class="py-3 px-4 text-left">Username</th>
+        <th class="py-3 px-4 text-left">First Name</th>
+        <th class="py-3 px-4 text-left">Last Name</th>
+        <th class="py-3 px-4 text-left">Email</th>
+        <th class="py-3 px-4 text-left">Birth Date</th>
+        <th class="py-3 px-4 text-left">Basic Salary</th>
+        <th class="py-3 px-4 text-left">Status</th>
+        <th class="py-3 px-4 text-left">Group</th>
+        <th class="py-3 px-4 text-left">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of pagedEmployees">
+        <td class="border-t border-gray-200 px-4 py-2">{{ data.username }}</td>
+        <td class="border-t border-gray-200 px-4 py-2">{{ data.firstName }}</td>
+        <td class="border-t border-gray-200 px-4 py-2">{{ data.lastName }}</td>
+        <td class="border-t border-gray-200 px-4 py-2">{{ data.email }}</td>
+        <td class="border-t border-gray-200 px-4 py-2">{{ data.birthDate | date }}</td>
+        <td class="border-t border-gray-200 px-4 py-2">{{ data.basicSalary | formatCurrency }}</td>
+        <td class="border-t border-gray-200 px-4 py-2">{{ data.status }}</td>
+        <td class="border-t border-gray-200 px-4 py-2">{{ data.group }}</td>
+        <td class="border-t border-gray-200 px-4 py-2 whitespace-nowrap">
+          <button
+            (click)="openModal(data.username)"
+            class="bg-gray-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200"
+          >
+            Actions
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="mt-4 flex justify-center">
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1" class="bg-gray-300 text-black py-2 px-4 rounded-lg">
+        Previous
+      </button>
+      <span class="mx-2">Page {{ currentPage }} of {{ totalPages }}</span>
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages" class="bg-gray-300 text-black py-2 px-4 rounded-lg">
+        Next
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-action-modal
+  [isOpen]="showModal"
+  [username]="selectedUsername"
+  (close)="closeModal()"
+  (delete)="handleModalDelete()"
+  (view)="handleModalView()"
+  (edit)="handleModalEdit()"
+></app-action-modal>

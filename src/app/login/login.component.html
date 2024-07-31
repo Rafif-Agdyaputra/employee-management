@@ -1,0 +1,27 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full mx-4">
+    <h2 class="text-3xl font-bold mb-6 text-gray-800">Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="mb-4">
+        <label class="block text-gray-700">Username</label>
+        <input id="username" formControlName="username" type="text" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+        <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="text-red-500 text-sm">
+          Username harus di isi.
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700">Password</label>
+        <input id="password" formControlName="password" type="password" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500 text-sm">
+          Password harus di isi.
+        </div>
+      </div>
+      <button type="submit" [disabled]="loginForm.invalid" class="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 w-full">
+        Login
+      </button>
+      <span class="text-[14px] text-red-600">{{errorMessage && errorMessage}}</span>
+    </form>
+  </div>
+</div>

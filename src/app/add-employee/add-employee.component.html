@@ -1,0 +1,102 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+    <h2 class="text-2xl font-bold mb-6">{{isEditMode ? 'Edit Karyawan' : 'Tambah Karyawan'}}</h2>
+
+    <form #employeeForm="ngForm" (ngSubmit)="addEmployee()">
+      <div class="grid grid-cols-1 gap-2">
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+          <input type="text" id="username" [(ngModel)]="employee.username" name="username"
+                 class="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                 [ngClass]="{'border-red-500': (employeeForm.submitted && !username.valid) || usernameExists}"
+                 (blur)="checkUsername()"
+                 required #username="ngModel">
+          <div *ngIf="employeeForm.submitted && !firstName.valid" class="text-red-500 text-sm">First Name tiak boleh kosong.</div>
+          <div *ngIf="usernameExists" class="text-red-500 text-sm">Username sudah ada.</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <div class="mb-4">
+          <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+          <input type="text" id="firstName" [(ngModel)]="employee.firstName" name="firstName"
+                 class="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                 [ngClass]="{'border-red-500': employeeForm.submitted && !firstName.valid}"
+                 required #firstName="ngModel">
+          <div *ngIf="employeeForm.submitted && !firstName.valid" class="text-red-500 text-sm">First Name tiak boleh kosong.</div>
+        </div>
+
+        <div class="mb-4">
+          <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+          <input type="text" id="lastName" [(ngModel)]="employee.lastName" name="lastName"
+                 class="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                 [ngClass]="{'border-red-500': employeeForm.submitted && !lastName.valid}"
+                 required #lastName="ngModel">
+          <div *ngIf="employeeForm.submitted && !lastName.valid" class="text-red-500 text-sm">Last Name tidak boleh kosong.</div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" id="email" [(ngModel)]="employee.email" name="email"
+               class="mt-1 p-2 w-full border border-gray-300 rounded-md"
+               [ngClass]="{'border-red-500': employeeForm.submitted && !email.valid}"
+               required email #email="ngModel">
+        <div *ngIf="employeeForm.submitted && email.errors?.['required']" class="text-red-500 text-sm">Email tidak boleh kosong.</div>
+        <div *ngIf="employeeForm.submitted && email.errors?.['email']" class="text-red-500 text-sm">Format email salah.</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="birthDate" class="block text-sm font-medium text-gray-700">Birth Date</label>
+        <input type="date" id="birthDate" [(ngModel)]="employee.birthDate" name="birthDate"
+               [max]="today" class="mt-1 p-2 w-full border border-gray-300 rounded-md"
+               [ngClass]="{'border-red-500': employeeForm.submitted && !birthDate.valid}"
+               required #birthDate="ngModel">
+        <div *ngIf="employeeForm.submitted && !birthDate.valid" class="text-red-500 text-sm">Birth Date tidak boleh kosong.</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="basicSalary" class="block text-sm font-medium text-gray-700">Basic Salary</label>
+        <input type="number" id="basicSalary" [(ngModel)]="employee.basicSalary" name="basicSalary"
+               class="mt-1 p-2 w-full border border-gray-300 rounded-md"
+               [ngClass]="{'border-red-500': employeeForm.submitted && !basicSalary.valid}"
+               required #basicSalary="ngModel">
+        <div *ngIf="employeeForm.submitted && !basicSalary.valid" class="text-red-500 text-sm">Basic Salary tidak boleh kosong.</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+        <input type="text" id="status" [(ngModel)]="employee.status" name="status"
+               class="mt-1 p-2 w-full border border-gray-300 rounded-md"
+               [ngClass]="{'border-red-500': employeeForm.submitted && !status.valid}"
+               required #status="ngModel">
+        <div *ngIf="employeeForm.submitted && !status.valid" class="text-red-500 text-sm">Status tidak boleh kosong.</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="group" class="block text-sm font-medium text-gray-700">Group</label>
+        <select id="group" [(ngModel)]="employee.group" name="group"
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                [ngClass]="{'border-red-500': employeeForm.submitted && !group.valid}"
+                required #group="ngModel">
+          <option *ngFor="let group of groups" [value]="group">{{ group }}</option>
+        </select>
+        <div *ngIf="employeeForm.submitted && !group.valid" class="text-red-500 text-sm">Group tidak boleh kosong.</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea id="description" [(ngModel)]="employee.description" name="description"
+                  class="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                  [ngClass]="{'border-red-500': employeeForm.submitted && !description.valid}"
+                  required #description="ngModel"></textarea>
+        <div *ngIf="employeeForm.submitted && !description.valid" class="text-red-500 text-sm">Description tidak boleh kosong.</div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+        <button type="button" (click)="cancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
